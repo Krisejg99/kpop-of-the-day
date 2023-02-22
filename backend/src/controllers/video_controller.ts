@@ -3,6 +3,7 @@
  */
 import Debug from 'debug'
 import { Request, Response } from 'express'
+import { matchedData, validationResult } from 'express-validator'
 import prisma from '../prisma'
 
 // Create a new debug instance
@@ -21,7 +22,10 @@ export const index = async (req: Request, res: Response) => {
 		})
 	}
 	catch (err) {
-		
+		res.status(500).send({
+			status: "error",
+			message: "Could not get videos in database",
+		})
 	}
 }
 
@@ -33,13 +37,23 @@ export const show = async (req: Request, res: Response) => {
 	try {
 		const video = await prisma.video.findUnique({ where: { id: videoId } })
 
+		if (!video) {
+			return res.status(404).send({
+				status: "fail",
+				message: `Could not find vidoe with id ${videoId}`,
+			})
+		}
+
 		res.send({
 			status: "success",
 			data: video,
 		})
 	}
 	catch (err) {
-		
+		res.status(500).send({
+			status: "error",
+			message: "Could not get video in database",
+		})
 	}
 }
 
@@ -47,6 +61,35 @@ export const show = async (req: Request, res: Response) => {
  * Create a video
  */
 export const store = async (req: Request, res: Response) => {
+	const validationErrors = validationResult(req)
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).send({
+			status: "fail",
+			data: validationErrors.array()
+		})
+	}
+
+	const { title, url } = matchedData(req)
+
+	try {
+		const video = await prisma.video.create({
+			data: {
+				title,
+				url,
+			},
+		})
+
+		res.send({
+			status: "success",
+			data: video,
+		})
+	}
+	catch (err) {
+		res.status(500).send({
+			status: "error",
+			message: "Could not create video in database",
+		})
+	}
 }
 
 /**
