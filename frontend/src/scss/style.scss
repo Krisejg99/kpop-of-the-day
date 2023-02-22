@@ -22,12 +22,28 @@
 }
 
 #video-title {
-	margin: 2rem;
-	width: 85%;
+	margin: 2rem 1rem;
+	width: 90%;
 	text-align: center;
+	font-size: 1.3rem;
 }
 
 #video-player {
-	width: 80vh;
-	height: calc(80vh / 1.78);
+	width: 80vw;
+	height: calc(80vw / 1.78);
+	max-width: 800px;
+	max-height: calc(800px / 1.78);
+	margin-bottom: 1rem;
+}
+
+.fetch-failed {
+	display: block;
+	background-color: rgb(255, 176, 176);
+	color: rgb(219, 26, 0);
+	border-radius: 15px;
+	padding: 1rem;
+}
+
+.hide {
+	display: none;
 }
