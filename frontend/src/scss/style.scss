@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+
 * {
 	box-sizing: border-box;
 	padding: 0;
@@ -8,6 +10,7 @@
 	width: 100vw;
 	height: 100vh;
 	background-color: rgb(40, 40, 40);
+	font-family: 'Audiowide', cursive;
 }
 
 .video-wrapper {
